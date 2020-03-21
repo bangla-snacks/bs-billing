@@ -1,7 +1,7 @@
 package com.bangla.snacks.customer.business;
 
-import com.bangla.snacks.customer.constants.DBConstants;
-import com.bangla.snacks.customer.exception.AppConstraintViolationException;
+import com.bangla.snacks.common.constants.DBConstants;
+import com.bangla.snacks.common.exception.AppConstraintViolationException;
 import com.bangla.snacks.customer.json.models.AddressJson;
 import com.bangla.snacks.customer.json.models.CustomerJson;
 import org.hibernate.exception.ConstraintViolationException;
@@ -26,6 +26,8 @@ public class BOHelper {
                     throw new AppConstraintViolationException(cve, ((CustomerJson) obj).getContactNo());
                 case UNIQUE_CUSTOMER_EMAIL:
                     throw new AppConstraintViolationException(cve, ((CustomerJson) obj).getEmail());
+                case UNIQUE_CUSTOMER_USER_ID:
+                    throw new AppConstraintViolationException(cve, ((CustomerJson) obj).getUserId());
             }
         }
     }

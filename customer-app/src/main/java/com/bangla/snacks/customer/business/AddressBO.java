@@ -1,10 +1,11 @@
 package com.bangla.snacks.customer.business;
 
+import com.bangla.snacks.common.exception.NoSuchAddressException;
 import com.bangla.snacks.customer.db.models.AddressDB;
 import com.bangla.snacks.customer.db.models.CustomerDB;
-import com.bangla.snacks.customer.exception.NoSuchAddressException;
 import com.bangla.snacks.customer.json.models.AddressJson;
 import com.bangla.snacks.customer.repository.AddressRepository;
+import com.bangla.snacks.customer.repository.CustomerRepository;
 import com.bangla.snacks.customer.util.Transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,17 +15,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.bangla.snacks.common.util.CommonUtil.isUpdatable;
+import static com.bangla.snacks.common.util.CommonUtil.titleCase;
+
 @Component
 @AllArgsConstructor
 public class AddressBO {
     private AddressRepository addressRepository;
+    private CustomerBO customerBO;
+    private ChangeLogBO changeLogBO;
 
-    public AddressJson addAddress(AddressJson address, String customerId) {
+    public AddressJson addAddress(AddressJson address, String userId) {
         AddressDB addressDB = Transformer.toAddressDB(address);
-        addressDB.setCustomer(CustomerDB.builder().customerId(customerId).build());
+        CustomerDB customer = customerBO.findByUserId(userId);
+        addressDB.setCustomer(customer);
 
         try {
+            ChangeLogBO.ChangeLogExecutor executor = changeLogBO.prepareLog(addressDB, userId);
             AddressDB savedAddress = addressRepository.save(addressDB);
+            executor.execute();
             return Transformer.toAddressJson(savedAddress);
         } catch (DataIntegrityViolationException e) {
             BOHelper.verifyDataIntegrityViolation(e, address);
@@ -32,51 +41,61 @@ public class AddressBO {
         return AddressJson.builder().build();
     }
 
-    public List<AddressJson> getAllAddressOfCustomer(String customerId) {
-        List<AddressDB> allAddresses = addressRepository.getAllByCustomer(CustomerDB.builder().customerId(customerId).build());
+    public List<AddressJson> getAllAddressOfCustomer(String userId) {
+        List<AddressDB> allAddresses = addressRepository.getAllByCustomer(customerBO.findByUserId(userId));
         return allAddresses.stream().map(Transformer::toAddressJson).collect(Collectors.toList());
     }
 
-    public AddressJson getAddressById(String customerId, String addressId) {
-        Optional<AddressDB> address = addressRepository.getByAddressIdAndCustomer(addressId, CustomerDB.builder().customerId(customerId).build());
-        return Transformer.toAddressJson(address.orElseThrow(NoSuchAddressException::new));
+    public AddressJson getAddressByType(String userId, String addressType) {
+        return Transformer.toAddressJson(findAddressByTypeAndUserId(addressType, userId));
     }
 
-    public void deleteAddressById(String customerId, String addressId) {
-        addressRepository.deleteAddressDBByAddressIdAndCustomer(addressId, CustomerDB.builder().customerId(customerId).build());
+    public void deleteAddress(String userId, String addressType) {
+        addressRepository.deleteAddressDBByAddressTypeAndCustomer(addressType, customerBO.findByUserId(userId));
     }
 
-    public AddressJson updateAddressById(String customerId, String addressId, AddressJson addressJson) {
+    public AddressJson updateAddressById(String userId, String addressType, AddressJson addressJson) {
         AddressDB currentObject = Transformer.toAddressDB(addressJson);
 
-        Optional<AddressDB> searchResult = addressRepository.getByAddressIdAndCustomer(addressId, CustomerDB.builder().customerId(customerId).build());
-        AddressDB savedObject = searchResult.orElseThrow(NoSuchAddressException::new);
+        AddressDB savedObject = findAddressByTypeAndUserId(addressType, userId);
+
+        ChangeLogBO.ChangeLogExecutor executor = changeLogBO.prepareLog(savedObject, currentObject, userId);
 
         prepareUpdateObject(currentObject, savedObject);
 
         AddressDB updatedAddress = addressRepository.save(savedObject);
-
+        executor.execute();
         return Transformer.toAddressJson(updatedAddress);
     }
 
+    private AddressDB findAddressByTypeAndUserId(String addressType, String userId) {
+        Optional<AddressDB> searchResult = addressRepository.getByAddressTypeAndCustomer(addressType, customerBO.findByUserId(userId));
+        return searchResult.orElseThrow(NoSuchAddressException::new);
+    }
+
     private void prepareUpdateObject(AddressDB currentObject, AddressDB savedObject) {
-        if (currentObject.getAddressLine1() != null) {
-            savedObject.setAddressLine1(currentObject.getAddressLine1());
+        if (isUpdatable(currentObject.getAddressLine1(), savedObject.getAddressLine1())) {
+            String changeRequestAddressLine1 = titleCase(currentObject.getAddressLine1());
+            savedObject.setAddressLine1(changeRequestAddressLine1);
         }
         if (currentObject.getAddressLine2() != null) {
-            savedObject.setAddressLine2(currentObject.getAddressLine2());
+            String changeRequestAddressLine2 = titleCase(currentObject.getAddressLine2());
+            savedObject.setAddressLine2(changeRequestAddressLine2);
         }
-        if (currentObject.getAddressType() != null) {
-            savedObject.setAddressType(currentObject.getAddressType());
+        if (isUpdatable(currentObject.getAddressType(), savedObject.getAddressType())) {
+            String changeRequestAddressType = titleCase(currentObject.getAddressType());
+            savedObject.setAddressType(changeRequestAddressType);
         }
-        if (currentObject.getArea() != null) {
-            savedObject.setArea(currentObject.getArea());
+        if (isUpdatable(currentObject.getArea(), savedObject.getArea())) {
+            String changeRequestArea = titleCase(currentObject.getArea());
+            savedObject.setArea(changeRequestArea);
         }
         if (currentObject.getPin() != null) {
             savedObject.setPin(currentObject.getPin());
         }
         if (currentObject.getLandmark() != null) {
-            savedObject.setLandmark(currentObject.getLandmark());
+            String changeRequestArea = titleCase(currentObject.getLandmark());
+            savedObject.setLandmark(changeRequestArea);
         }
     }
 }

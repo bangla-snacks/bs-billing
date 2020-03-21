@@ -16,38 +16,38 @@ import java.util.Date;
 public class AddressRestController {
     private AddressBO addressBO;
 
-    @PostMapping(value = "/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addAddress(@RequestBody AddressJson address,
-                                                  @PathVariable("customerId") String customerId) {
+                                                  @PathVariable("userId") String userId) {
         address.setCreateDate(new Date());
-        return new ResponseEntity<>(addressBO.addAddress(address, customerId), HttpStatus.CREATED);
+        return new ResponseEntity<>(addressBO.addAddress(address, userId), HttpStatus.CREATED);
     }
-    @GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAllAddresses(@PathVariable("customerId") String customerId) {
-        return new ResponseEntity<>(addressBO.getAllAddressOfCustomer(customerId), HttpStatus.OK);
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAllAddresses(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(addressBO.getAllAddressOfCustomer(userId), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{customerId}/{addressId}", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(value = "/{userId}/{addressType}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> updateAddress(@RequestBody AddressJson address,
-                                             @PathVariable("customerId") String customerId,
-                                                @PathVariable("addressId") String addressId) {
-        return new ResponseEntity<>(addressBO.updateAddressById(customerId, addressId, address), HttpStatus.OK);
+                                             @PathVariable("userId") String userId,
+                                                @PathVariable("addressType") String addressType) {
+        return new ResponseEntity<>(addressBO.updateAddressById(userId, addressType, address), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{customerId}/{addressId}", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/{userId}/{addressType}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAddress(@PathVariable("customerId") String customerId,
-                                                @PathVariable("addressId") String addressId) {
-        return new ResponseEntity<>(addressBO.getAddressById(customerId, addressId), HttpStatus.OK);
+    public ResponseEntity<Object> getAddress(@PathVariable("userId") String userId,
+                                                @PathVariable("addressType") String addressType) {
+        return new ResponseEntity<>(addressBO.getAddressByType(userId, addressType), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{customerId}/{addressId}", consumes = MediaType.APPLICATION_JSON_VALUE,
+    @DeleteMapping(value = "/{userId}/{addressType}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> deleteAddress(@PathVariable("customerId") String customerId,
-                                             @PathVariable("addressId") String addressId) {
-        addressBO.deleteAddressById(customerId, addressId);
+    public ResponseEntity<Object> deleteAddress(@PathVariable("userId") String userId,
+                                             @PathVariable("addressType") String addressType) {
+        addressBO.deleteAddress(userId, addressType);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

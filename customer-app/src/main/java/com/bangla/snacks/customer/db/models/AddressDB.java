@@ -1,6 +1,7 @@
 package com.bangla.snacks.customer.db.models;
 
-import com.bangla.snacks.customer.constants.DBConstants;
+import com.bangla.snacks.common.constants.DBConstants;
+import com.bangla.snacks.customer.annotation.FixedValue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class AddressDB implements Serializable, DBConstants {
     private static final long serialVersionUID = -92194927129323L;
 
     @Id
+    @FixedValue
     @Column(name = COL_ADDRESS_DB_ID, length = 20)
     private String addressId;
 
@@ -49,9 +51,31 @@ public class AddressDB implements Serializable, DBConstants {
     private String addressType;
 
     @Column(name = COL_ADDRESS_DB_DT_CREATED, updatable = false)
+    @FixedValue
     private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = COL_CUSTOMER_DB_ID, foreignKey = @ForeignKey(name = FOREIGN_KEY_CUSTOMER_ID_ADDRESS_TABLE))
     private CustomerDB customer;
+
+    @Override
+    public String toString() {
+            return new StringBuilder().append("{")
+                    .append(", addressLine1:'")
+                    .append(addressLine1)
+                    .append(", addressLine2:'")
+                    .append(addressLine2)
+                    .append(", area:'")
+                    .append(area)
+                    .append(", landmark:'")
+                    .append(landmark)
+                    .append(", createDate:")
+                    .append(createDate)
+                    .append( ", contactNo:'")
+                    .append(pin)
+                    .append(", addressType:")
+                    .append(addressType)
+                    .append('}')
+                    .toString();
+    }
 }

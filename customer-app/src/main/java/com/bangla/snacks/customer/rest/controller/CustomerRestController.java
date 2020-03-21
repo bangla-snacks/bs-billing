@@ -1,7 +1,6 @@
 package com.bangla.snacks.customer.rest.controller;
 
 import com.bangla.snacks.customer.business.CustomerBO;
-import com.bangla.snacks.customer.exception.NotImplementedException;
 import com.bangla.snacks.customer.json.models.CustomerJson;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,18 +29,19 @@ public class CustomerRestController {
         return new ResponseEntity<>(customerBO.getAllCustomers(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getCustomer(@PathVariable("customerId") String customerId) {
-        return new ResponseEntity<>(customerBO.getCustomerById(customerId), HttpStatus.OK);
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getCustomer(@PathVariable("userId") String userId) {
+        return new ResponseEntity<>(customerBO.getCustomerByUserId(userId), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> updateCustomer(@PathVariable("customerId") String customerId, @RequestBody CustomerJson customer) {
-        throw new NotImplementedException();
+    @PutMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> updateCustomer(@PathVariable("userId") String userId, @RequestBody CustomerJson customer) {
+        return new ResponseEntity<>(customerBO.updateCustomer(userId, customer), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> deleteCustomer(@PathVariable("customerId") String customerId) {
-        throw new NotImplementedException();
+    @DeleteMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteCustomer(@PathVariable("userId") String userId) {
+        customerBO.deleteCustomer(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

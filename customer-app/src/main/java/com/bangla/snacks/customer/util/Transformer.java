@@ -1,5 +1,6 @@
 package com.bangla.snacks.customer.util;
 
+import com.bangla.snacks.common.util.CommonUtil;
 import com.bangla.snacks.customer.db.models.AddressDB;
 import com.bangla.snacks.customer.db.models.CustomerDB;
 import com.bangla.snacks.customer.json.models.AddressJson;
@@ -9,7 +10,10 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Transformer {
+import static com.bangla.snacks.common.util.CommonUtil.isUpdatable;
+import static com.bangla.snacks.common.util.CommonUtil.titleCase;
+
+public final class Transformer {
     private Transformer() {}
 
     public static CustomerJson toCustomerJson(CustomerDB customerDB) {
@@ -20,6 +24,7 @@ public class Transformer {
                 .email(customerDB.getEmail())
                 .contactNo(customerDB.getContactNo())
                 .createDate(customerDB.getCreateDate())
+                .userId(customerDB.getUserId())
                 .addresses(customerDB.getAddresses()
                         .stream()
                         .map(Transformer::toAddressJson)
@@ -30,11 +35,12 @@ public class Transformer {
     public static CustomerDB toCustomerDB(CustomerJson customerJson) {
         CustomerDB customerDb = CustomerDB.builder()
                 .customerId(String.format("CUST%s", CommonUtil.generateId()))
-                .firstName(customerJson.getFirstName())
-                .lastName(customerJson.getLastName())
+                .firstName(titleCase(customerJson.getFirstName()))
+                .lastName(titleCase(customerJson.getLastName()))
                 .email(customerJson.getEmail())
                 .contactNo(customerJson.getContactNo())
                 .createDate(customerJson.getCreateDate())
+                .userId(customerJson.getUserId())
                 .addresses(Optional.ofNullable(customerJson.getAddresses())
                         .orElse(Collections.emptyList())
                         .stream()
@@ -70,4 +76,5 @@ public class Transformer {
                 .addressType(addressJson.getAddressType())
                 .build();
     }
+
 }

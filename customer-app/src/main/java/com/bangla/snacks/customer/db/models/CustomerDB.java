@@ -1,6 +1,7 @@
 package com.bangla.snacks.customer.db.models;
 
-import com.bangla.snacks.customer.constants.DBConstants;
+import com.bangla.snacks.common.constants.DBConstants;
+import com.bangla.snacks.customer.annotation.FixedValue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,10 @@ import java.util.List;
                 @UniqueConstraint(
                         name = DBConstants.UNIQUE_CUSTOMER_CONTACT_NO,
                         columnNames = {DBConstants.COL_CUSTOMER_DB_CONTACT}
+                ),
+                @UniqueConstraint(
+                        name = DBConstants.UNIQUE_CUSTOMER_USER_ID,
+                        columnNames = {DBConstants.COL_CUSTOMER_DB_USR_ID}
                 )
         }
 
@@ -34,7 +39,12 @@ public class CustomerDB implements Serializable, DBConstants {
 
     @Id
     @Column(name = COL_CUSTOMER_DB_ID, length = 20)
+    @FixedValue
     private String customerId;
+
+    @Column(name = COL_CUSTOMER_DB_USR_ID, length = 20, nullable = false)
+    @FixedValue
+    private String userId;
 
     @Column(name = COL_CUSTOMER_DB_FIRST_NAME, length = 20, nullable = false)
     private String firstName;
@@ -46,6 +56,7 @@ public class CustomerDB implements Serializable, DBConstants {
     private String email;
 
     @Column(name = COL_CUSTOMER_DB_DT_CREATED, nullable = false, updatable = false)
+    @FixedValue
     private Date createDate;
 
     @Column(name = COL_CUSTOMER_DB_CONTACT, nullable = false, length = 20)
@@ -53,4 +64,25 @@ public class CustomerDB implements Serializable, DBConstants {
 
     @OneToMany(mappedBy = MAPPED_BY_CUSTOMER, cascade = CascadeType.ALL)
     private List<AddressDB> addresses;
+
+    @Override
+    public String toString() {
+        return new StringBuilder().append("{")
+                .append(", userId:'")
+                .append(userId)
+                .append(", firstName:'")
+                .append(firstName)
+                .append(", lastName:'")
+                .append(lastName)
+                .append(", email:'")
+                .append(email)
+                .append(", createDate:")
+                .append(createDate)
+                .append( ", contactNo:'")
+                .append(contactNo)
+                .append(", addresses:")
+                .append(addresses)
+                .append('}')
+                .toString();
+    }
 }

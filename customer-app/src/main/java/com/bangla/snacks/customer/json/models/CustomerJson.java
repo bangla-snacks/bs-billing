@@ -12,6 +12,7 @@ import java.util.List;
 public class CustomerJson {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String customerId;
+    private String userId;
     private String firstName;
     private String lastName;
     private String email;

@@ -17,9 +17,12 @@ public interface AddressRepository extends JpaRepository<AddressDB, String> {
 //    @Query(value = "select address from AddressDB address where address.addressId = 1 and address.customer = 2")
     Optional<AddressDB> getByAddressIdAndCustomer(String addressId, CustomerDB customer);
 
+    Optional<AddressDB> getByAddressTypeAndCustomer(String addressType, CustomerDB customer);
+
     @Transactional
     void deleteAddressDBByAddressIdAndCustomer(String addressId, CustomerDB customer);
 
+    void deleteAddressDBByAddressTypeAndCustomer(String addressType, CustomerDB customer);
 
 
 }
