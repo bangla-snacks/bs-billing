@@ -1,6 +1,6 @@
 package com.bangla.snacks.common.exception;
 
-import com.bangla.snacks.common.constants.ApplicationConstants;
+import com.bangla.snacks.customer.constants.ApplicationConstants;
 import org.springframework.http.HttpStatus;
 
 

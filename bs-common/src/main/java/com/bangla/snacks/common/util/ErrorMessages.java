@@ -1,4 +1,4 @@
-package com.bangla.snacks.customer.util;
+package com.bangla.snacks.common.util;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

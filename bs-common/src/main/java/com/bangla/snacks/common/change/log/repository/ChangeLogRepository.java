@@ -1,4 +1,8 @@
 package com.bangla.snacks.common.change.log.repository;
 
-public interface ChangeLogReposiroty {
+import com.bangla.snacks.common.change.log.model.ChangeLogDB;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ChangeLogRepository extends JpaRepository<ChangeLogDB, String> {
+
 }

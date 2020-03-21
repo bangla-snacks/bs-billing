@@ -1,4 +1,4 @@
-package com.bangla.snacks.billing;
+package com.bangla.snacks.common;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

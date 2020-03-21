@@ -1,10 +1,12 @@
-package com.bangla.snacks.customer.rest.advice;
+package com.bangla.snacks.common.rest.advice;
 
-import com.bangla.snacks.customer.constants.ApplicationConstants;
-import com.bangla.snacks.customer.exception.AppConstraintViolationException;
-import com.bangla.snacks.customer.exception.ApplicationError;
-import com.bangla.snacks.customer.util.AppResponseUtil;
-import com.bangla.snacks.customer.util.CommonUtil;
+import com.bangla.snacks.common.constants.ApplicationConstants;
+import com.bangla.snacks.common.constants.DBConstants;
+import com.bangla.snacks.common.exception.AppConstraintViolationException;
+import com.bangla.snacks.common.exception.ApplicationError;
+import com.bangla.snacks.common.models.ErrorObject;
+import com.bangla.snacks.common.util.AppResponseUtil;
+import com.bangla.snacks.common.util.CommonUtil;
 import lombok.AllArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -15,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.bangla.snacks.customer.constants.DBConstants.ApplicationConstraints;
 
 @RestControllerAdvice
 @AllArgsConstructor
@@ -53,7 +54,7 @@ public class ApplicationAdvice {
     public ResponseEntity<Object> handleConstraintViolationException(AppConstraintViolationException e) {
         ConstraintViolationException constraintViolationException = (ConstraintViolationException) e.getCause();
         String violatedConstraint = constraintViolationException.getConstraintName();
-        String errorMessagePropertyName = ApplicationConstraints.byConstraintName(violatedConstraint).getMessagePropertyName();
+        String errorMessagePropertyName = DBConstants.ApplicationConstraints.byConstraintName(violatedConstraint).getMessagePropertyName();
         String message = String.format(environment.getProperty(errorMessagePropertyName), e.getParameters());
 
         ErrorObject eo = ErrorObject.builder()

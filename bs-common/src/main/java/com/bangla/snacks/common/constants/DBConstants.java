@@ -1,12 +1,14 @@
-package com.bangla.snacks.common.exception.constants;
+package com.bangla.snacks.common.constants;
 
 import lombok.AllArgsConstructor;
 
 public interface DBConstants {
     String TABLE_CUSTOMER_DB = "BS_TBL_CUSTOMER";
     String TABLE_ADDRESS_DB = "BS_TBL_ADDRESS";
+    String TABLE_CHANGE_LOG_DB = "BS_TBL_CHG_LOG";
 
     String COL_CUSTOMER_DB_ID = "CUST_ID";
+    String COL_CUSTOMER_DB_USR_ID = "USER_ID";
     String COL_CUSTOMER_DB_FIRST_NAME = "FIRST_NAME";
     String COL_CUSTOMER_DB_LAST_NAME = "LAST_NAME";
     String COL_CUSTOMER_DB_EMAIL = "CUST_EMAIL";
@@ -22,14 +24,21 @@ public interface DBConstants {
     String COL_ADDRESS_DB_TYP = "ADDR_TYPE";
     String COL_ADDRESS_DB_DT_CREATED = "ADDR_CREATE_DATE";
 
+    String COL_CHANGE_LOG_DB_ID = "CHG_LOG_ID";
+    String COL_CHANGE_LOG_DB_CHG_DT = "CHG_DT";
+    String COL_CHANGE_LOG_DB_CHG_DESC = "CHG_DESC";
+    String COL_CHANGE_LOG_DB_CHG_BY = "CHG_BY";
+
     String MAPPED_BY_CUSTOMER = "customer";
 
     String UNIQUE_CUSTOMER_ID_ADDR_TYPE             = "UNIQUE_CUSTOMER_ID_ADDR_TYPE";
     String UNIQUE_CUSTOMER_CONTACT_NO               = "UNIQUE_CUSTOMER_CONTACT_NO";
+    String UNIQUE_CUSTOMER_USER_ID                  = "UNIQUE_CUSTOMER_USER_ID";
     String UNIQUE_CUSTOMER_EMAIL                    = "UNIQUE_CUSTOMER_EMAIL";
     String FOREIGN_KEY_CUSTOMER_ID_ADDRESS_TABLE    = "TBL_CUSTOMER_CUSTOMER_ID_TBL_ADDRESS";
 
     String CV_MESSAGE_PROP_UNIQUE_CUSTOMER_ID_ADDR_TYPE = "application.error-messages.duplicate-address-type";
+    String CV_MESSAGE_PROP_UNIQUE_USER_ID = "application.error-messages.duplicate-user-id";
     String CV_MESSAGE_PROP_UNIQUE_CUSTOMER_CONTACT_NO = "application.error-messages.duplicate-phone";
     String CV_MESSAGE_PROP_UNIQUE_CUSTOMER_EMAIL = "application.error-messages.duplicate-email";
     String CV_MESSAGE_PROP_FOREIGN_KEY_CUSTOMER_ID_ADDRESS_TABLE = "";
@@ -37,6 +46,7 @@ public interface DBConstants {
     @AllArgsConstructor
     enum ApplicationConstraints {
         UNIQUE_CUSTOMER_ID_ADDR_TYPE(DBConstants.UNIQUE_CUSTOMER_ID_ADDR_TYPE, CV_MESSAGE_PROP_UNIQUE_CUSTOMER_ID_ADDR_TYPE),
+        UNIQUE_CUSTOMER_USER_ID(DBConstants.UNIQUE_CUSTOMER_USER_ID, CV_MESSAGE_PROP_UNIQUE_USER_ID),
         UNIQUE_CUSTOMER_CONTACT_NO(DBConstants.UNIQUE_CUSTOMER_CONTACT_NO, CV_MESSAGE_PROP_UNIQUE_CUSTOMER_CONTACT_NO),
         UNIQUE_CUSTOMER_EMAIL(DBConstants.UNIQUE_CUSTOMER_EMAIL, CV_MESSAGE_PROP_UNIQUE_CUSTOMER_EMAIL),
         FOREIGN_KEY_CUSTOMER_ID_ADDRESS_TABLE(DBConstants.FOREIGN_KEY_CUSTOMER_ID_ADDRESS_TABLE, CV_MESSAGE_PROP_FOREIGN_KEY_CUSTOMER_ID_ADDRESS_TABLE);

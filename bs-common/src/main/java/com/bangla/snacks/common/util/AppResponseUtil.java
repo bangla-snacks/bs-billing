@@ -1,7 +1,7 @@
-package com.bangla.snacks.customer.util;
+package com.bangla.snacks.common.util;
 
-import com.bangla.snacks.customer.json.models.AppResponseModel;
-import com.bangla.snacks.customer.json.models.RequestMetaData;
+import com.bangla.snacks.common.models.AppResponseModel;
+import com.bangla.snacks.common.models.RequestMetaData;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

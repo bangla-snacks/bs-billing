@@ -1,9 +1,9 @@
-package com.bangla.snacks.customer.json.models;
-
-import java.util.Date;
+package com.bangla.snacks.common.models;
 
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @Builder

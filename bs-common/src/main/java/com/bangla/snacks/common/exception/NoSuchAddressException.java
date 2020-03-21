@@ -1,7 +1,7 @@
-package com.bangla.snacks.customer.exception;
+package com.bangla.snacks.common.exception;
 
-import com.bangla.snacks.customer.constants.ApplicationConstants;
-import com.bangla.snacks.customer.util.CommonUtil;
+import com.bangla.snacks.common.constants.ApplicationConstants;
+import com.bangla.snacks.common.util.CommonUtil;
 import org.springframework.http.HttpStatus;
 
 public class NoSuchAddressException extends ApplicationError {

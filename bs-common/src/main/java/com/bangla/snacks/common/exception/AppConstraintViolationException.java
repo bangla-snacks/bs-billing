@@ -1,4 +1,4 @@
-package com.bangla.snacks.customer.exception;
+package com.bangla.snacks.common.exception;
 
 import org.hibernate.exception.ConstraintViolationException;
 

@@ -1,9 +1,12 @@
-package com.bangla.snacks.customer.util;
+package com.bangla.snacks.common.util;
 
-import com.bangla.snacks.customer.constants.ApplicationConstants;
+
+import com.bangla.snacks.common.constants.ApplicationConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,5 +42,37 @@ public final class CommonUtil {
             chars[i] = 'X';
         }
         return new String(chars);
+    }
+
+    public static String titleCase(String name) {
+
+        String[] tokens = name.split(" ");
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String token : tokens) {
+            if(StringUtils.isAllUpperCase(token)) {
+                sb.append(token);
+            } else {
+                String toLowerCase = token.toLowerCase();
+                int length = toLowerCase.length();
+                sb.append((char) (toLowerCase.charAt(0) - 32));
+                if (length > 1) {
+                    sb.append(toLowerCase.substring(1, length));
+                }
+            }
+            sb.append(" ");
+        }
+
+        return sb.toString().trim();
+    }
+    public static boolean isUpdatable(Object from, Object to) {
+        if(Objects.equals(from, to) || to == null) {
+            return false;
+        }
+        if(from == null) {
+            return true;
+        }
+        return !from.equals(titleCase(Objects.toString(to)));
     }
 }

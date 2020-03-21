@@ -1,11 +1,10 @@
-package com.bangla.snacks.customer.json.models;
-
-import java.io.Serializable;
+package com.bangla.snacks.common.models;
 
 import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-import lombok.Data;
+import java.io.Serializable;
 
 @Data
 @Builder
